@@ -3,6 +3,7 @@ import OpenAI from "openai";
 
 const app = express();
 
+//🔧 FIX 1: mover esto ARRIBA (antes de cualquier app.post)//
 app.use(express.json());
 app.use(express.static("public"));
 
