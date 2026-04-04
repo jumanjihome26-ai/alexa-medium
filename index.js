@@ -6,7 +6,7 @@ function respuestaAlexa(texto) {
  // PRUEBA PARA CONFIRMAR QUE ALEXA SE CONECTA
 app.post("/webhook", async (req, res) => {
   try {
-
+//pruebas conexión ALEXA
     return res.json({
       version: "1.0",
       response: {
