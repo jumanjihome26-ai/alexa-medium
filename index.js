@@ -86,9 +86,20 @@ app.post("/webhook", async (req, res) => {
       const data = comandosTablero[comandoDetectado];
       const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
 
+   /*sustitución de código por error al ejecutar alexa error de skill
       return res.json({
         response: `${data.mensaje} ${accion}`
-      });
+      });*/
+      return res.json({
+  version: "1.0",
+  response: {
+    outputSpeech: {
+      type: "SSML",
+      ssml: `<speak>${data.mensaje} ${accion}</speak>`
+    },
+    shouldEndSession: false
+  }
+});
     }
 
     // 🧠 RESPUESTAS RÁPIDAS
