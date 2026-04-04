@@ -2,6 +2,18 @@ import express from "express";
 import OpenAI from "openai";
 
 const app = express();
+function respuestaAlexa(texto) {
+  return {
+    version: "1.0",
+    response: {
+      outputSpeech: {
+        type: "SSML",
+        ssml: `<speak>${texto}</speak>`
+      },
+      shouldEndSession: false
+    }
+  };
+}
 app.use(express.json());
 
 const client = new OpenAI({
@@ -88,7 +100,7 @@ app.post("/webhook", async (req, res) => {
 
    /*sustitución de código por error al ejecutar alexa error de skill
       return res.json({
-        response: `${data.mensaje} ${accion}`
+       response: `${data.mensaje} ${accion}`
       });*/
       return res.json({
   version: "1.0",
@@ -131,8 +143,9 @@ app.post("/webhook", async (req, res) => {
 
     const respuesta = completion.choices[0].message.content.trim();
 
-    return res.json({ response: respuesta });
-
+  //ELIMINADO PARA AÑADIR FORMATO ALEXA respuestaAlexa  return res.json({ response: respuesta });
+    return res.json(respuestaAlexa("El Guardián permanece en silencio..."));
+    
   } catch (error) {
     return res.json({ response: "El Guardián ha tenido un fallo interno..." });
   }
