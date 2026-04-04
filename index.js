@@ -2,24 +2,23 @@ import express from "express";
 import OpenAI from "openai";
 
 const app = express();
-function respuestaAlexa(texto) {
- // PRUEBA PARA CONFIRMAR QUE ALEXA SE CONECTA
-app.post("/webhook", async (req, res) => {
-  try {
-//pruebas conexión ALEXA
-    return res.json({
-      version: "1.0",
-      response: {
-        outputSpeech: {
-          type: "SSML",
-          ssml: "<speak>PRUEBA RENDER</speak>"
-        },
-        shouldEndSession: false
-      }
-    });
-    const input = steps...
-}
+
+// 🔧 FIX 1: mover esto ARRIBA (antes de cualquier app.post)
 app.use(express.json());
+
+// 🔧 FIX 2: función bien definida (ANTES estaba rota y contenía un webhook dentro)
+function respuestaAlexa(texto) {
+  return {
+    version: "1.0",
+    response: {
+      outputSpeech: {
+        type: "SSML",
+        ssml: `<speak>${texto}</speak>`
+      },
+      shouldEndSession: false
+    }
+  };
+}
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -30,19 +29,13 @@ app.get("/", (req, res) => {
   res.send("🧿 Alexa Medium viva");
 });
 
-// 🔥 WEBHOOK (AQUÍ VIVE TODO TU SISTEMA)
+// 🔥 WEBHOOK (ÚNICO - eliminado duplicado anterior)
 app.post("/webhook", async (req, res) => {
   try {
-    return res.json({
-      version: "1.0",
-      response: {
-        outputSpeech: {
-          type: "SSML",
-          ssml: "<speak>Conexión establecida.</speak>"
-        },
-        shouldEndSession: false
-      }
-    });
+
+    // 🔧 FIX 3: eliminar return de prueba que bloqueaba TODO
+    // (antes devolvía "Conexión establecida" y nunca ejecutaba lógica)
+
     const input = req.body?.input || "";
 
     const texto = input
@@ -84,12 +77,13 @@ app.post("/webhook", async (req, res) => {
 
     const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
 
+    // 🔧 FIX 4: TODAS las respuestas pasan por respuestaAlexa
     if (esSeñal) {
-      return res.json({ response: mensaje });
+      return res.json(respuestaAlexa(mensaje));
     }
 
     if (esApertura) {
-      return res.json({ response: frase });
+      return res.json(respuestaAlexa(frase));
     }
 
     // 🧿 COMANDOS TABLERO
@@ -107,6 +101,7 @@ app.post("/webhook", async (req, res) => {
     if (texto.includes("abre senda secreta")) {
       return res.json(respuestaAlexa("Senda secreta activada."));
     }
+
     const comandoDetectado = Object.keys(comandosTablero).find(cmd =>
       texto.includes(cmd)
     );
@@ -115,20 +110,7 @@ app.post("/webhook", async (req, res) => {
       const data = comandosTablero[comandoDetectado];
       const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
 
-   /*sustitución de código por error al ejecutar alexa error de skill
-      return res.json({
-       response: `${data.mensaje} ${accion}`
-      });*/
-      return res.json({
-  version: "1.0",
-  response: {
-    outputSpeech: {
-      type: "SSML",
-      ssml: `<speak>${data.mensaje} ${accion}</speak>`
-    },
-    shouldEndSession: false
-  }
-});
+      return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
     }
 
     // 🧠 RESPUESTAS RÁPIDAS
@@ -140,7 +122,7 @@ app.post("/webhook", async (req, res) => {
     const match = respuestasRapidas.find(r => r.regex.test(texto));
 
     if (match) {
-      return res.json({ response: match.text });
+      return res.json(respuestaAlexa(match.text));
     }
 
     // 🧠 OPENAI
@@ -160,35 +142,32 @@ app.post("/webhook", async (req, res) => {
 
     const respuesta = completion.choices[0].message.content.trim();
 
-  //ELIMINADO PARA AÑADIR FORMATO ALEXA respuestaAlexa  return res.json({ response: respuesta });
-    return res.json(respuestaAlexa("El Guardián permanece en silencio..."));
-    
+    // 🔧 FIX 5: devolver respuesta REAL de OpenAI (antes estaba ignorada)
+    return res.json(respuestaAlexa(respuesta));
+
   } catch (error) {
-    return res.json({ response: "El Guardián ha tenido un fallo interno..." });
+    // 🔧 FIX 6: formato Alexa también en errores
+    return res.json(respuestaAlexa("El Guardián ha tenido un fallo interno..."));
   }
 });
 
+// 🧪 GET de prueba (no toca Alexa)
 app.get("/webhook", async (req, res) => {
   try {
 
-    // 👉 adaptamos input desde URL
     const input = req.query.input || "";
 
-    // 👉 pegamos tu lógica tal cual
     const texto = input
       ? input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim()
       : "";
 
-    // 🧠 APERTURA
     const esApertura = texto === "hola";
 
-    // 🧠 SEÑAL
     const esSeñal = texto.includes("senal") 
       || texto.includes("orden")
       || texto.includes("ayuda")
       || texto.includes("peligro");
 
-    // 👉 prueba simple (NO TOCAMOS TU SISTEMA)
     if (texto.includes("bloqueo")) {
       return res.json({ response: "Muévete. Gira sobre ti misma." });
     }
