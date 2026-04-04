@@ -4,16 +4,21 @@ import OpenAI from "openai";
 const app = express();
 function respuestaAlexa(texto) {
  // PRUEBA PARA CONFIRMAR QUE ALEXA SE CONECTA
-/*  return {
-    version: "1.0",
-    response: {
-      outputSpeech: {
-        type: "SSML",
-        ssml: `<speak>${texto}</speak>`
-      },
-      shouldEndSession: false
-    }
-  };*/
+app.post("/webhook", async (req, res) => {
+  try {
+
+    return res.json({
+      version: "1.0",
+      response: {
+        outputSpeech: {
+          type: "SSML",
+          ssml: "<speak>PRUEBA RENDER</speak>"
+        },
+        shouldEndSession: false
+      }
+    });
+
+    const input = steps...
 }
 app.use(express.json());
 
