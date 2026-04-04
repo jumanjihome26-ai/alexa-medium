@@ -3,7 +3,8 @@ import OpenAI from "openai";
 
 const app = express();
 function respuestaAlexa(texto) {
-  return {
+ // PRUEBA PARA CONFIRMAR QUE ALEXA SE CONECTA
+/*  return {
     version: "1.0",
     response: {
       outputSpeech: {
@@ -12,7 +13,7 @@ function respuestaAlexa(texto) {
       },
       shouldEndSession: false
     }
-  };
+  };*/
 }
 app.use(express.json());
 
