@@ -4,7 +4,12 @@ import OpenAI from "openai";
 const app = express();
 
 // 🔧 FIX 1: mover esto ARRIBA (antes de cualquier app.post)
+// 🔧 leer JSON (peticiones de Alexa)
 app.use(express.json());
+
+// 🔧 SERVIR ARCHIVOS ESTÁTICOS (audio)
+// Permite acceder a /public/audio desde navegador o Alexa
+app.use(express.static("public"));
 
 // 🔧 FIX 2: función bien definida (ANTES estaba rota y contenía un webhook dentro)
 function respuestaAlexa(texto) {
