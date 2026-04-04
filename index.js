@@ -135,7 +135,7 @@ app.post("/webhook", async (req, res) => {
       // (esto mantiene tu lógica original de variabilidad)
       const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
       return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
-  }
+  //}
   });
 }
 
@@ -173,7 +173,9 @@ app.post("/webhook", async (req, res) => {
     // 🔧 FIX 5: devolver respuesta REAL de OpenAI (antes estaba ignorada)
     return res.json(respuestaAlexa(respuesta));
 
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     // 🔧 FIX 6: formato Alexa también en errores
     return res.json(respuestaAlexa("El Guardián ha tenido un fallo interno..."));
   }
@@ -196,21 +198,25 @@ app.get("/webhook", async (req, res) => {
       || texto.includes("ayuda")
       || texto.includes("peligro");
 
-    if (texto.includes("bloqueo")) {
+    if (texto.includes("bloqueo"))
+    {
       return res.json({ response: "Muévete. Gira sobre ti misma." });
     }
 
-    if (esApertura) {
-      return res.json({ response: "El tablero responde..." });
-    }
+    if (esApertura) 
+      {
+        return res.json({ response: "El tablero responde..." });
+      }
 
-    if (esSeñal) {
-      return res.json({ response: "Una sola acción. Nada más." });
-    }
-
+    if (esSeñal) 
+      {
+        return res.json({ response: "Una sola acción. Nada más." });
+      }
     return res.json({ response: "El Guardián escucha..." });
 
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     return res.json({ response: "Error en GET..." });
   }
 });
