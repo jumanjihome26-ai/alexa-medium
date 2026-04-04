@@ -144,7 +144,7 @@ if (comandoDetectado) {
   // Si NO tiene audio, dejamos vacío para no romper nada
   //const audioTag = data.audio 
   //  ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
-   const audioTag = `<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>`;  : "";
+   const audioTag = `<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>`; 
 
   // 📤 RESPUESTA FINAL PARA ALEXA (SSML)
   // IMPORTANTE: aquí NO usamos respuestaAlexa() porque necesitamos insertar audio
