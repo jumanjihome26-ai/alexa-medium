@@ -113,9 +113,9 @@ app.post("/webhook", async (req, res) => {
             "Retoma la actividad.",
             "Sigue sin pensar."
           ]
-      };//fin cierre (CUANDO TERMINA LA SITUACIÓN)
-
-      
+        }//fin cierre (CUANDO TERMINA LA SITUACIÓN)
+      };
+     
 // 3️⃣ DETECTORES (Booleanos)
      // 🧠 LÓGICA DE SALUDO (Frase diaria)
      // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
