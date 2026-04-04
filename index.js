@@ -136,12 +136,6 @@ app.post("/webhook", async (req, res) => {
       const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
       return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
   }
-
-
-
-      // 🔁 Mantenemos sesión abierta (igual que antes)
-      shouldEndSession: false
-    }
   });
 }
 
