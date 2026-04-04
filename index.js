@@ -109,15 +109,16 @@ app.post("/webhook", async (req, res) => {
 
     // 🧿 COMANDOS TABLERO
     const comandosTablero = {
-      "bloqueo": {
-        mensaje: "Muévete.",
-        acciones: [
-          "Levántate ahora.",
-          "Da tres pasos hacia adelante.",
-          "Gira sobre ti misma."
-        ]
-      }
-    };
+  "bloqueo": {
+    mensaje: "Muévete.",
+    acciones: [
+      "Levántate ahora.",
+      "Da tres pasos hacia adelante.",
+      "Gira sobre ti misma."
+    ],
+    audio: "1.mp3" // 🔧 AÑADIDO
+  }
+};
     
     if (texto.includes("abre senda secreta")) {
       return res.json(respuestaAlexa("Senda secreta activada."));
@@ -127,12 +128,45 @@ app.post("/webhook", async (req, res) => {
       texto.includes(cmd)
     );
 
-    if (comandoDetectado) {
-      const data = comandosTablero[comandoDetectado];
-      const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
+// 🧿 COMANDOS TABLERO (EJECUCIÓN)
+// Este bloque se activa cuando el texto contiene un comando como "bloqueo"
+if (comandoDetectado) {
 
-      return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
+  // 📦 Recuperamos los datos del comando detectado (mensaje, acciones, audio...)
+  const data = comandosTablero[comandoDetectado];
+
+  // 🎲 Seleccionamos una acción aleatoria del array
+  // (esto mantiene tu lógica original de variabilidad)
+  const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
+
+  // 🔊 GENERADOR DE AUDIO (NUEVO)
+  // Si el comando tiene propiedad "audio", construimos la etiqueta <audio> de Alexa
+  // Si NO tiene audio, dejamos vacío para no romper nada
+  const audioTag = data.audio 
+    ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
+    : "";
+
+  // 📤 RESPUESTA FINAL PARA ALEXA (SSML)
+  // IMPORTANTE: aquí NO usamos respuestaAlexa() porque necesitamos insertar audio
+  // SSML permite mezclar voz + sonido
+  return res.json({
+    version: "1.0",
+    response: {
+      outputSpeech: {
+        type: "SSML",
+
+        // 🧠 ORDEN DE EJECUCIÓN:
+        // 1. Mensaje (ej: "Muévete.")
+        // 2. Acción (ej: "Gira sobre ti misma.")
+        // 3. Audio (ej: tambor Jumanji)
+        ssml: `<speak>${data.mensaje} ${accion} ${audioTag}</speak>`
+      },
+
+      // 🔁 Mantenemos sesión abierta (igual que antes)
+      shouldEndSession: false
     }
+  });
+}
 
     // 🧠 RESPUESTAS RÁPIDAS
     const respuestasRapidas = [
