@@ -107,67 +107,37 @@ app.post("/webhook", async (req, res) => {
       return res.json(respuestaAlexa(frase));
     }
 
-    // 🧿 COMANDOS TABLERO
-    const comandosTablero = {
-  "bloqueo": {
-    mensaje: "Muévete.",
-    acciones: [
-      "Levántate ahora.",
-      "Da tres pasos hacia adelante.",
-      "Gira sobre ti misma."
-    ],
-    audio: "1.mp3" // 🔧 AÑADIDO
-  }
-};
     
-    if (texto.includes("abre senda secreta")) {
-      return res.json(respuestaAlexa("Senda secreta activada."));
-    }
-
-    const comandoDetectado = Object.keys(comandosTablero).find(cmd =>
-      texto.includes(cmd)
+  // 🧿 COMANDOS TABLERO
+    const comandosTablero = {
+      "bloqueo": {
+          mensaje: "Muévete.",
+         acciones: [
+            "Levántate ahora.",
+            "Da tres pasos hacia adelante.",
+            "Gira sobre ti misma."
+          ], //DUDA CON ESTA COMA SI DA ERROR QUITARLA
+      }
+  };
+    
+   const comandoDetectado = Object.keys(comandosTablero).find(cmd =>
+   texto.includes(cmd)
     );
 
-// 🧿 COMANDOS TABLERO (EJECUCIÓN)
-// Este bloque se activa cuando el texto contiene un comando como "bloqueo"
-if (comandoDetectado) {
-
-  // 📦 Recuperamos los datos del comando detectado (mensaje, acciones, audio...)
-    const data = comandosTablero[comandoDetectado];
+  // 🧿 COMANDOS TABLERO (EJECUCIÓN)
+  // Este bloque se activa cuando el texto contiene un comando como "bloqueo"
+  if (comandoDetectado) {
   
-    // 🎲 Seleccionamos una acción aleatoria del array
-    // (esto mantiene tu lógica original de variabilidad)
-    const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
+    // 📦 Recuperamos los datos del comando detectado (mensaje, acciones, audio...)
+      const data = comandosTablero[comandoDetectado];
+    
+      // 🎲 Seleccionamos una acción aleatoria del array
+      // (esto mantiene tu lógica original de variabilidad)
+      const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
+      return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
+  }
 
- /*PARTE QUE SE CARGÓ PORQUE NO FUNCIONABA NADA PARA INCLUIR LA MÚSICA
-  // 🔊 GENERADOR DE AUDIO (NUEVO)
-  // Si el comando tiene propiedad "audio", construimos la etiqueta <audio> de Alexa
-  // Si NO tiene audio, dejamos vacío para no romper nada
-  //const audioTag = data.audio 
-  //  ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
-  //NO FUNCIONA const audioTag = `<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>`; 
-//const audioTag = data.audio 
-//  ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
-  //: "";
 
-return res.json(
-  respuestaAlexa(`${data.mensaje} ${accion} ${audioTag}`)
-);*/
-  // 📤 RESPUESTA FINAL PARA ALEXA (SSML)
-  // IMPORTANTE: aquí NO usamos respuestaAlexa() porque necesitamos insertar audio
-  // SSML permite mezclar voz + sonido
-  return res.json({
-    version: "1.0",
-    response: {
-      outputSpeech: {
-        type: "SSML",
-
-        // 🧠 ORDEN DE EJECUCIÓN:
-        // 1. Mensaje (ej: "Muévete.")
-        // 2. Acción (ej: "Gira sobre ti misma.")
-        // 3. Audio (ej: tambor Jumanji)
-        ssml: `<speak>${data.mensaje} ${accion} ${audioTag}</speak>`
-      },
 
       // 🔁 Mantenemos sesión abierta (igual que antes)
       shouldEndSession: false
@@ -175,19 +145,17 @@ return res.json(
   });
 }
 
-    // 🧠 RESPUESTAS RÁPIDAS
+// 🧠 RESPUESTAS RÁPIDAS
     const respuestasRapidas = [
       { regex: /\b(hola|buenas)\b/i, text: "Aquí estoy." },
       { regex: /gracias/i, text: "Sigue." }
     ];
-
     const match = respuestasRapidas.find(r => r.regex.test(texto));
-
     if (match) {
       return res.json(respuestaAlexa(match.text));
     }
 
-    // 🧠 OPENAI
+// 🧠 OPENAI
     const completion = await client.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
@@ -195,8 +163,9 @@ return res.json(
           role: "system",
           //content: "Eres el Guardián de las Sendas. Hablas cercano, con ligera narrativa tipo explorador, sin exagerar."
            //MI GUARDIÁN - - - NO CAMBIAR NI TOCAR NADA ---
-          content: "Eres el Guardián de las Sendas. Hablas con tono misterioso, sabio y cercano. Responde en 2 frases, claro y natural para voz. Evita lenguaje excesivamente literario o recargado."
-
+          content: "Eres el Guardián de las Sendas. Hablas con tono misterioso, 
+                   sabio y cercano, con ligera narrativa de explorador. Responde en 2 frases, claro y natural para voz.
+                   Evita lenguaje excesivamente literario o recargado , evita sonar como un cahtbot."
         },
         {
           role: "user",
