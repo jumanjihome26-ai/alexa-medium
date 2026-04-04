@@ -56,7 +56,7 @@ app.post("/webhook", async (req, res) => {
       "No avanzar… también cuenta como casilla.",
       "Cada paso ordena más que mil intenciones.",
       "Hoy no limpias. Hoy conquistas territorio.",
-      "El desorden no es enemigo… es mapa sin leer."
+      "El desorden no es enemigo… es mapa sin leer.",
       "Si dudas, lanza el dado. Si temes, avanza igual.",
       "No soy constante… soy persistente.",
       "No sigo rutina… sigo una senda.",
