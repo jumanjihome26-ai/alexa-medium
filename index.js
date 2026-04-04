@@ -40,8 +40,17 @@ app.post("/webhook", async (req, res) => {
     if (req.body.request?.type === "LaunchRequest") {
       return res.json(respuestaAlexa("El Guardián está despierto."));
     }
-    const input = req.body?.input || "";
-  
+    //LINEA SUSTITUIDA POR LO DE ABAJO //const input = req.body?.input || "";
+
+   / 🔧 ADAPTADOR ALEXA → PIPEDREAM
+// Antes: solo leíamos req.body.input (formato Pipedream)
+// Ahora: Alexa envía el texto dentro de request.intent.slots.input.value
+// Este cambio NO modifica la lógica del sistema, solo permite leer correctamente el input venga de donde venga
+
+  const input = req.body?.input 
+    || req.body?.request?.intent?.slots?.input?.value 
+    || "";
+        
     // 🧪 DEBUG — VER QUÉ ENVÍA ALEXA
     console.log("BODY COMPLETO:", JSON.stringify(req.body, null, 2)); //AÑADIDO 
     
@@ -144,7 +153,7 @@ app.post("/webhook", async (req, res) => {
           role: "user",
           content: input
         }
-      ]
+      ]inp
     });
 
     const respuesta = completion.choices[0].message.content.trim();
