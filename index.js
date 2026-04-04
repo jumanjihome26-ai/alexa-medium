@@ -89,7 +89,10 @@ app.post("/webhook", async (req, res) => {
         ]
       }
     };
-
+    
+    if (texto.includes("abre senda secreta")) {
+      return res.json(respuestaAlexa("Senda secreta activada."));
+    }
     const comandoDetectado = Object.keys(comandosTablero).find(cmd =>
       texto.includes(cmd)
     );
