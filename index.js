@@ -42,7 +42,7 @@ app.post("/webhook", async (req, res) => {
     }
     //LINEA SUSTITUIDA POR LO DE ABAJO //const input = req.body?.input || "";
 
-   / 🔧 ADAPTADOR ALEXA → PIPEDREAM
+  // 🔧 ADAPTADOR ALEXA → PIPEDREAM
 // Antes: solo leíamos req.body.input (formato Pipedream)
 // Ahora: Alexa envía el texto dentro de request.intent.slots.input.value
 // Este cambio NO modifica la lógica del sistema, solo permite leer correctamente el input venga de donde venga
