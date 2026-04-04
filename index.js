@@ -127,6 +127,46 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
+app.get("/webhook", async (req, res) => {
+  try {
+
+    // 👉 adaptamos input desde URL
+    const input = req.query.input || "";
+
+    // 👉 pegamos tu lógica tal cual
+    const texto = input
+      ? input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim()
+      : "";
+
+    // 🧠 APERTURA
+    const esApertura = texto === "hola";
+
+    // 🧠 SEÑAL
+    const esSeñal = texto.includes("senal") 
+      || texto.includes("orden")
+      || texto.includes("ayuda")
+      || texto.includes("peligro");
+
+    // 👉 prueba simple (NO TOCAMOS TU SISTEMA)
+    if (texto.includes("bloqueo")) {
+      return res.json({ response: "Muévete. Gira sobre ti misma." });
+    }
+
+    if (esApertura) {
+      return res.json({ response: "El tablero responde..." });
+    }
+
+    if (esSeñal) {
+      return res.json({ response: "Una sola acción. Nada más." });
+    }
+
+    return res.json({ response: "El Guardián escucha..." });
+
+  } catch (error) {
+    return res.json({ response: "Error en GET..." });
+  }
+});
+
 // 🚀 SERVIDOR
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
