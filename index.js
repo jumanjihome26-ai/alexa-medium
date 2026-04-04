@@ -153,7 +153,7 @@ app.post("/webhook", async (req, res) => {
           role: "user",
           content: input
         }
-      ]inp
+      ]
     });
 
     const respuesta = completion.choices[0].message.content.trim();
