@@ -28,7 +28,16 @@ app.get("/", (req, res) => {
 // 🔥 WEBHOOK (AQUÍ VIVE TODO TU SISTEMA)
 app.post("/webhook", async (req, res) => {
   try {
-
+    return res.json({
+      version: "1.0",
+      response: {
+        outputSpeech: {
+          type: "SSML",
+          ssml: "<speak>Conexión establecida.</speak>"
+        },
+        shouldEndSession: false
+      }
+    });
     const input = req.body?.input || "";
 
     const texto = input
