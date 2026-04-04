@@ -36,6 +36,10 @@ app.post("/webhook", async (req, res) => {
     // 🔧 FIX 3: eliminar return de prueba que bloqueaba TODO
     // (antes devolvía "Conexión establecida" y nunca ejecutaba lógica)
 
+    // 🔧 FIX: detectar LaunchRequest (cuando Alexa abre la skill)
+    if (req.body.request?.type === "LaunchRequest") {
+      return res.json(respuestaAlexa("El Guardián está despierto."));
+    }
     const input = req.body?.input || "";
   
     // 🧪 DEBUG — VER QUÉ ENVÍA ALEXA
