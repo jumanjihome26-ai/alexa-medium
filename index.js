@@ -133,19 +133,26 @@ app.post("/webhook", async (req, res) => {
 if (comandoDetectado) {
 
   // 📦 Recuperamos los datos del comando detectado (mensaje, acciones, audio...)
-  const data = comandosTablero[comandoDetectado];
+    const data = comandosTablero[comandoDetectado];
+  
+    // 🎲 Seleccionamos una acción aleatoria del array
+    // (esto mantiene tu lógica original de variabilidad)
+    const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
 
-  // 🎲 Seleccionamos una acción aleatoria del array
-  // (esto mantiene tu lógica original de variabilidad)
-  const accion = data.acciones[Math.floor(Math.random() * data.acciones.length)];
-
+ /*PARTE QUE SE CARGÓ PORQUE NO FUNCIONABA NADA PARA INCLUIR LA MÚSICA
   // 🔊 GENERADOR DE AUDIO (NUEVO)
   // Si el comando tiene propiedad "audio", construimos la etiqueta <audio> de Alexa
   // Si NO tiene audio, dejamos vacío para no romper nada
   //const audioTag = data.audio 
   //  ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
-   const audioTag = `<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>`; 
+  //NO FUNCIONA const audioTag = `<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>`; 
+//const audioTag = data.audio 
+//  ? `<audio src="https://alexa-medium.onrender.com/audio/${data.audio}"/>`
+  //: "";
 
+return res.json(
+  respuestaAlexa(`${data.mensaje} ${accion} ${audioTag}`)
+);*/
   // 📤 RESPUESTA FINAL PARA ALEXA (SSML)
   // IMPORTANTE: aquí NO usamos respuestaAlexa() porque necesitamos insertar audio
   // SSML permite mezclar voz + sonido
