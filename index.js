@@ -37,7 +37,10 @@ app.post("/webhook", async (req, res) => {
     // (antes devolvía "Conexión establecida" y nunca ejecutaba lógica)
 
     const input = req.body?.input || "";
-
+  
+    // 🧪 DEBUG — VER QUÉ ENVÍA ALEXA
+    console.log("BODY COMPLETO:", JSON.stringify(req.body, null, 2)); //AÑADIDO 
+    
     const texto = input
       ? input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim()
       : "";
