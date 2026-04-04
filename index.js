@@ -17,7 +17,6 @@ app.post("/webhook", async (req, res) => {
         shouldEndSession: false
       }
     });
-
     const input = steps...
 }
 app.use(express.json());
