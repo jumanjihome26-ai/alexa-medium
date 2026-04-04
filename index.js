@@ -147,7 +147,10 @@ app.post("/webhook", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: "Eres el Guardián de las Sendas. Hablas cercano, con ligera narrativa tipo explorador, sin exagerar."
+          //content: "Eres el Guardián de las Sendas. Hablas cercano, con ligera narrativa tipo explorador, sin exagerar."
+           //MI GUARDIÁN - - - NO CAMBIAR NI TOCAR NADA ---
+          content: "Eres el Guardián de las Sendas. Hablas con tono misterioso, sabio y cercano. Responde en 2 frases, claro y natural para voz. Evita lenguaje excesivamente literario o recargado."
+
         },
         {
           role: "user",
