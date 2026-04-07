@@ -25,7 +25,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-//AL OBTENER RESPUESTA DEL SERVIDOR
+//AL OBTENER RESPUESTA DEL SERVIDOR - SIRVE COMO HERRAMIENTA COMPROBACIÓN POR SI HAY DUDAS O RENDER FALLA
 app.get("/", (req, res) => {
   res.send("🧿 Alexa Medium viva");
 });
@@ -34,7 +34,7 @@ app.post("/webhook", async (req, res) => {
   try {
     // 1️⃣ APERTURA (LaunchRequest)
     if (req.body.request?.type === "LaunchRequest") {
-      return res.json(respuestaAlexa("Senda activada"));
+      return res.json(respuestaAlexa("Senda secreta activada"));
     }
 
     const input = req.body?.input 
