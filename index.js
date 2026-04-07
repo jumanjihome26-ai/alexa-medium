@@ -240,7 +240,8 @@ app.get("/webhook", async (req, res) => {
 });
 
 //PUERTO DONDE ESTÁ ACTIVO EL SERVIDOR
-const PORT = process.env.PORT || 3000;
+//original: const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000; // NUMBER (...) Convierte lo que venga en process.env.PORT a número.
 app.listen(PORT, () => {
   console.log("Servidor activo en puerto " + PORT);
 });
