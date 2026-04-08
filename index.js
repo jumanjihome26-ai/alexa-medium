@@ -79,7 +79,9 @@ app.post("/webhook", async (req, res) => {
 //Se activan al decirle "tablero: bloqueo, tensión,interferencia, reubicación, cierre  
     const comandosTablero = {
       "bloqueo": {
-          mensaje: "Muévete.",
+          mensaje:`
+            <audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/>
+            Muévete.`,
           acciones: [
             "Levántate ahora.",
             "Da tres pasos hacia adelante.",
