@@ -9,7 +9,13 @@ app.use(express.static("public"));
 
 //para traer los datos de frases.json (FRASE_DIARIA)
 //no funcionó, dio error estás usando ES Modules (import)👉 NO CommonJS const datos = require("./frases.json");
-import datos from "./frases.json" assert { type: "json" };
+//tampoco funcionó : import datos from "./frases.json" assert { type: "json" };
+
+//Es un módulo nativo de Node.js. leer archivos, escribir archivos y  manejar el sistema de ficheros
+import fs from "fs";
+
+//lee archivo, lo convierte y lo deja listo para usar
+const datos = JSON.parse(fs.readFileSync("./frases.json", "utf-8"));
 
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
