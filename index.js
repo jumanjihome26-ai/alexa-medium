@@ -25,8 +25,6 @@ function respuestaAlexa(texto) {
     }
   };
 }
-  };
-}
 
 //CLAVE API PARA OPENAI
 const client = new OpenAI({
