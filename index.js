@@ -15,6 +15,11 @@ function respuestaAlexa(texto) {
         type: "SSML",
         ssml: `<speak>${texto}</speak>`
       },
+      reprompt: {
+        outputSpeech: {
+          type: "SSML",
+          ssml: `<speak>El tablero sigue activo… dime tu siguiente movimiento</speak>`
+        }
       shouldEndSession: false
     }
   };
