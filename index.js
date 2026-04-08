@@ -8,6 +8,22 @@ app.use(express.static("public"));
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
+
+  const reprompts = [
+//FRASES QUE DIRÁ CUANDO PERMANECE A LA ESPERA:
+    "El tablero sigue abierto… no te hagas la distraída.",
+    "Sigo aquí… no finjas que no sabes qué toca.",
+    "El tablero no se ha cerrado… por si estabas pensando escapar.",
+    "Sigo escuchando… a ver qué haces ahora.",
+    "Tranquila… no he desaparecido. Continúa.",
+    "El tablero espera… sin prisa, pero sin pausa.",
+    "Aquí sigo… no te me pierdas ahora.",
+    "La jugada sigue en marcha… mueve ficha.",
+    "No he cerrado… curioso, ¿no?"
+  ];
+
+  const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
+
   return {
     version: "1.0",
     response: {
@@ -18,7 +34,7 @@ function respuestaAlexa(texto) {
       reprompt: {
         outputSpeech: {
           type: "SSML",
-          ssml: `<speak>El tablero sigue activo… dime tu siguiente movimiento</speak>`
+          ssml: `<speak>${repromptAleatorio}</speak>`
         }
       },
       shouldEndSession: false
