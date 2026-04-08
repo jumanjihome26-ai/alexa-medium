@@ -53,6 +53,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhook", async (req, res) => {
+ 
+  if (req.query.key !== process.env.SECRET_KEY) {
+  return res.status(403).send("No autorizado");
+}
   try {
     // 1️⃣ APERTURA (LaunchRequest)
     if (req.body.request?.type === "LaunchRequest") {
