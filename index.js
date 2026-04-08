@@ -15,8 +15,9 @@ app.use(express.static("public"));
 import fs from "fs";
 
 //lee archivo, lo convierte y lo deja listo para usar
-const datos = JSON.parse(fs.readFileSync("./frases.json", "utf-8"));
-
+const datos = JSON.parse(
+  fs.readFileSync("./frases.json", "utf-8")
+);
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
