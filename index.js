@@ -8,7 +8,9 @@ app.use(express.static("public"));
 
 
 //para traer los datos de frases.json (FRASE_DIARIA)
-const datos = require("./frases.json");
+//no funcionó, dio error estás usando ES Modules (import)👉 NO CommonJS const datos = require("./frases.json");
+import datos from "./frases.json" assert { type: "json" };
+
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
