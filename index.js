@@ -20,8 +20,11 @@ function respuestaAlexa(texto) {
           type: "SSML",
           ssml: `<speak>El tablero sigue activo… dime tu siguiente movimiento</speak>`
         }
+      },
       shouldEndSession: false
     }
+  };
+}
   };
 }
 
