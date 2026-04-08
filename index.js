@@ -6,6 +6,10 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+
+//para traer los datos de frases.json (FRASE_DIARIA)
+const datos = require("./frases.json");
+
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
 
@@ -183,26 +187,10 @@ app.post("/webhook", async (req, res) => {
 
 // 6️⃣ EJECUCIÓN PRIORIDAD 3: APERTURA / FRASE DÍA (Ahorro OpenAI)
       if (esApertura) {
-          // 🌿 FRASES DIARIAS****************************************************
-          const FRASES_DIA = [
-          "El tablero no pregunta si quieres jugar. Ya estás dentro.",
-          "No avanzar… también cuenta como casilla.",
-          "Cada paso ordena más que mil intenciones.",
-          "Hoy no limpias. Hoy conquistas territorio.",
-          "El desorden no es enemigo… es mapa sin leer.",
-          "Si dudas, lanza el dado. Si temes, avanza igual.",
-          "No soy constante… soy persistente.",
-          "No sigo rutina… sigo una senda.",
-          "No limpio… restauro equilibrio.",
-          "No cumplo tareas… respondo al tablero.",
-          "No busco motivación… invoco movimiento.",
-          "El tablero no castiga… revela.",
-          "Cada objeto fuera de lugar… es una historia detenida.",
-          "Donde hay caos… hay energía esperando dirección.",
-          "El explorador no controla el juego… lo atraviesa.",
-          "Hay días de avance… y días de escucha. Ambos cuentan."
+          // 🌿 FRASES DIARIAS DESDE EL ARCHIVO frases.json
+          const FRASES_DIA = datos.frases_dia;
  
-    ];
+   
           //CALCULO FECHA Y MISMA FRASE TODO EL DÍA FRASE 1 DÍA 1 DEL AÑO
           const hoy = new Date();
           const inicioAño = new Date(hoy.getFullYear(), 0, 0);
