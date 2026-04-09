@@ -1,12 +1,18 @@
 {
   "comandos_tablero": {
-    "bloqueo": {
-      "mensaje": "Muévete.",
-      "acciones": [
-        "Levántate ahora.",
-        "Da tres pasos hacia adelante.",
-        "Gira sobre ti misma."
-      ]
+
+    "ansiedad": { "mensaje": "Vuelve aquí", "acciones": ["Mira un punto fijo","Inhala lento por la nariz","Exhala más largo","Baja los hombros"] },
+    "apatía": { "mensaje": "Vuelve aquí", "acciones": ["Levántate sin pensarlo","Estira brazos arriba","Sacude el cuerpo","Camina rápido unos pasos"] },
+    "sobrepensar": { "mensaje": "Vuelve aquí", "acciones": ["Di “basta” en voz alta","Cambia de habitación","Toca algo frío","Mira tus manos"] },
+    "impulso": { "mensaje": "Vuelve aquí", "acciones": ["Cuenta atrás 5","Respira profundo","Da un paso atrás","Mira alrededor"] },
+    "desconexión": { "mensaje": "Vuelve aquí", "acciones": ["Toca tu pecho","Respira lento","Nombra 3 cosas que ves","Nombra 1 cosa que sientes"] },
+    "rabia": { "mensaje": "Vuelve aquí", "acciones": ["Aprieta puños fuerte","Suelta de golpe","Golpea saco boxeo","Exhala fuerte"] },
+    "indecisión": { "mensaje": "Vuelve aquí", "acciones": ["Mira lo que tienes delante","Elige una sola tarea","Empieza 2 minutos","Ignora el resto"] },
+    "dispersión": { "mensaje": "Vuelve aquí", "acciones": ["Mira tu espacio","Endereza postura","Cierra lo que sobra","Retoma tarea"] },
+    "sobrecarga": { "mensaje": "Vuelve aquí", "acciones": ["Para lo que haces","Siéntate","Respira 5 veces","Mira un punto"] },
+    "nocturno": { "mensaje": "Vuelve aquí", "acciones": ["Cierra los ojos","Respira lento","Gira el cuerpo","No mires pantallas"] },
+    "duda": { "mensaje": "Vuelve aquí", "acciones": ["Endereza espalda","Mira al frente","Da un paso adelante","Respira profundo"] },
+    "evitación": { "mensaje": "Vuelve aquí", "acciones": ["Empieza 1 minuto","Abre lo necesario","Elimina distracciones","Haz lo mínimo"] },
+    "fatiga": { "mensaje": "Vuelve aquí", "acciones": ["Estira cuello","Cierra ojos 10 segundos","Respira lento","Bebe agua"] }
     }
   }
-}
