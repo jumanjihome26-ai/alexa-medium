@@ -97,10 +97,10 @@ app.post("/webhook", async (req, res) => {
   /*comentado para probar desde arhivo .json en lugar desde el código
     const comandosTablero = {
       "bloqueo": {
-       /* VARIAS PRUEBAS REALIZADAS POR SEGUNDA VEZ PARA INCLUIR LA CANCION ESPECIFICA PERO NO FUNCIOAN:
-       mensaje:`<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/> Muévete.`,
+       //VARIAS PRUEBAS REALIZADAS POR SEGUNDA VEZ PARA INCLUIR LA CANCION ESPECIFICA PERO NO FUNCIOAN:
+      // mensaje:`<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/> Muévete.`,
          //tampoco funcionó // mensaje: `<audio src="https://www.soundjay.com/buttons/sounds/button-16.mp3"/> Muévete.`,
-         mensaje: `<audio src="https://alexa-medium.onrender.com/audio/1.mp3"/> Muévete.`,*/
+       //  mensaje: `<audio src="https://alexa-medium.onrender.com/audio/1.mp3"/> Muévete.`,
         mensaje: "Muévete.",
           acciones: [
             "Levántate ahora.",
