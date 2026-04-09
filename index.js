@@ -254,17 +254,16 @@ app.post("/webhook", async (req, res) => {
 
 // 🧪 TEST VISUAL (Navegador)
 app.get("/webhook", async (req, res) => {
-  try {
-   if (req.query.key !== process.env.SECRET_KEY) {
-    return res.status(403).send("No autorizado");
-  }
+if (req.query.key !== process.env.SECRET_KEY) {
+  return res.status(403).send("No autorizado");
+}
 
+try {
   return res.json({ response: "El Guardián escucha..." });
-       
-  } catch (error) {
-    return res.json({ response: "El Guardián ha tenido un fallo interno" });
-  }
-});
+
+} catch (error) {
+  return res.json({ response: "El Guardián ha tenido un fallo interno" });
+}
 
 //PUERTO DONDE ESTÁ ACTIVO EL SERVIDOR
 //original: const PORT = process.env.PORT || 3000;
