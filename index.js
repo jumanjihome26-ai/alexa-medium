@@ -255,14 +255,12 @@ app.post("/webhook", async (req, res) => {
 // 🧪 TEST VISUAL (Navegador)
 app.get("/webhook", async (req, res) => {
   try {
-   // const input = req.query.input || "";
-    //const texto = input ? input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim()
-    //  : "";
-     
-    // Aquí podrías añadir lógica simplificada de test si quieres, 
-    // pero de momento lo dejamos limpio para evitar errores.
-    return res.json({ response: "El Guardián escucha..." });
-    
+   if (req.query.key !== process.env.SECRET_KEY) {
+    return res.status(403).send("No autorizado");
+  }
+
+  return res.json({ response: "El Guardián escucha..." });
+       
   } catch (error) {
     return res.json({ response: "El Guardián ha tenido un fallo interno" });
   }
