@@ -40,7 +40,6 @@ function respuestaAlexa(texto) {
   "Eh… vuelve aquí, no te disperses ahora.",
   "No te escapes… vuelve aquí.",
   "Vuelve aquí… que no hemos terminado.",
-  "Vuelve aquí… no te me vayas ahora."
   "Sigo aquí… esto no se termina solo.",
   "A ver… que no te has librado tan fácil.",
   "No te me quedes en pausa ahora.",
@@ -62,7 +61,9 @@ function respuestaAlexa(texto) {
   "Esto no se ha cerrado… seguimos.",
   "A ver cómo sigues ahora…",
   "Sigo aquí… paciente, pero no infinita.",
-  "El turno es tuyo… no lo olvides."
+  "El turno es tuyo… no lo olvides.",
+  "Vuelve aquí… no te me vayas ahora."
+
 ];
 
   const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
