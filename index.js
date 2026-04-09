@@ -38,7 +38,7 @@ function respuestaAlexa(texto) {
   "No he cerrado… curioso, ¿no?",
   "Vuelve aquí… que estabas en ello.",
   "Eh… vuelve aquí, no te disperses ahora.",
-  "No te escapes… vuelve aquí."
+  "No te escapes… vuelve aquí.",
   "Vuelve aquí… que no hemos terminado.",
   "Vuelve aquí… no te me vayas ahora."
   "Sigo aquí… esto no se termina solo.",
