@@ -1,0 +1,12 @@
+{
+  "comandos_tablero": {
+    "bloqueo": {
+      "mensaje": "Muévete.",
+      "acciones": [
+        "Levántate ahora.",
+        "Da tres pasos hacia adelante.",
+        "Gira sobre ti misma."
+      ]
+    }
+  }
+}
