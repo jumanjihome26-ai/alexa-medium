@@ -177,7 +177,17 @@ const comandosTablero = comandosData.comandos_tablero;
                  || texto.includes("ayuda") || texto.includes("peligro");
     // 🔍 BUSCADOR DE COMANDO 
     //Se activan al deir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
-    const comandoDetectado = Object.keys(comandosTablero).find(cmd => texto.includes(cmd));
+    //const comandoDetectado = Object.keys(comandosTablero).find(cmd => texto.includes(cmd));
+
+    //normaliza claves JSON, las iguala al texto del usuario y hace match real
+    const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
+      const cmdNormalizado = cmd
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+        
+      return texto.includes(cmdNormalizado);
+    });
     
 // 4️⃣ EJECUCIÓN PRIORIDAD 1: COMANDOS (Ahorro OpenAI)
     if (comandoDetectado) {
