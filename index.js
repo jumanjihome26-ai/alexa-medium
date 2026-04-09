@@ -18,6 +18,10 @@ import fs from "fs";
 const datos = JSON.parse(
   fs.readFileSync("./frases.json", "utf-8")
 );
+//lee archivo comandosTablero.json y lo deja listo para usar
+const comandosData = JSON.parse(
+  fs.readFileSync("./comandosTablero.json", "utf-8")
+);
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
@@ -90,6 +94,7 @@ app.post("/webhook", async (req, res) => {
 // 2️⃣ DEFINICIÓN DE COMANDOS (Tu lista Jumanji)
 //COMANDOS TABLERO: BLOQUEO, TENSIÓN, ETC (Ahorro OpenAI)****************************************************
 //Se activan al decirle "tablero: bloqueo, tensión,interferencia, reubicación, cierre  
+  /*comentado para probar desde arhivo .json en lugar desde el código
     const comandosTablero = {
       "bloqueo": {
        /* VARIAS PRUEBAS REALIZADAS POR SEGUNDA VEZ PARA INCLUIR LA CANCION ESPECIFICA PERO NO FUNCIOAN:
@@ -158,7 +163,10 @@ app.post("/webhook", async (req, res) => {
           ]
         }//fin cierre (CUANDO TERMINA LA SITUACIÓN)
       };
-     
+*/
+//comandos tablero ahora vienen desde JSON
+const comandosTablero = comandosData.comandos_tablero;
+
 // 3️⃣ DETECTORES (Booleanos)
      // 🧠 LÓGICA DE SALUDO (Frase diaria)
      // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
