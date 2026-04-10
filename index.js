@@ -43,7 +43,8 @@ function respuestaAlexa(texto) {
       reprompt: {
         outputSpeech: {
           type: "SSML",
-          ssml: `<speak>${repromptAleatorio}</speak>`
+        //cambio para que suene más natural sustituyo  ssml: `<speak>${repromptAleatorio}</speak>` por:
+          ssml: `<speak>${texto.replace(/\./g, ". <break time='300ms'/>")}</speak>`
         }
       },
       shouldEndSession: false
