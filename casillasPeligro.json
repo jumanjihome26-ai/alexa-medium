@@ -1,0 +1,61 @@
+{
+  "casillaPeligro": {
+    "arana": {
+      "casilla": "nido de araña",
+      "clase": "REPLIEGUE",
+      "efecto": "Detención completa del avance durante todo el día",
+      "accion": "No realizar desafíos o reducir a 1 acción mínima simbólica",
+      "proposito": "Permitir pausa sin culpa cuando el sistema lo necesita",
+      "prohibicion": "No iniciar nuevas tareas exigentes"
+    },
+    "puente grande": {
+      "casilla": "puente grande (tramo completo)",
+      "clase": "TRANSICIÓN CONTROLADA",
+      "efecto": "No se pueden acumular desafíos. Máximo 1 desafío por turno o día",
+      "accion": "Avanzar con ritmo lento y consciente hasta salir del puente",
+      "proposito": "Evitar sobrecarga en fase de transición"
+    },
+    "volcan": {
+      "casilla": "zona de peligro volcán",
+      "clase": "SOBRECARGA",
+      "efecto": "Reducción obligatoria de exigencia",
+      "accion": "Realizar solo tareas ligeras o pendientes pequeñas",
+      "proposito": "Evitar agotamiento cuando hay señales de saturación"
+    },
+    "libelula": {
+      "casilla": "libélula",
+      "clase": "PAUSA BREVE",
+      "efecto": "Interrupción momentánea",
+      "accion": "Parar entre 10 y 30 minutos antes de continuar",
+      "proposito": "Romper inercia automática y recuperar foco"
+    },
+    "rio": {
+      "casilla": "agua / río",
+      "clase": "FLUIDEZ",
+      "efecto": "Adaptación libre del sistema",
+      "accion": "Elegir tareas suaves o creativas sin obligación de productividad",
+      "proposito": "Permitir avanzar sin presión"
+    },
+    "claro selva": {
+      "casilla": "claro de la selva",
+      "clase": "RECUPERACIÓN",
+      "efecto": "Pausa consciente con recompensa ligera",
+      "accion": "Realizar actividad agradable: descanso, café o desconexión",
+      "proposito": "Recargar energía sin necesidad de merecerlo"
+    },
+    "puente": {
+      "casilla": "puente pequeño",
+      "clase": "REPLANTEAMIENTO",
+      "efecto": "Revisión del estado actual",
+      "accion": "Elegir entre continuar, reducir o pausar",
+      "proposito": "Tomar decisiones conscientes en lugar de automáticas"
+    },
+    "estanque": {
+      "casilla": "estanque",
+      "clase": "INCERTIDUMBRE",
+      "efecto": "No avanzar directamente",
+      "accion": "Realizar una tarea simple que desbloquee claridad",
+      "proposito": "Evitar bloqueo por indecisión"
+    }
+  }
+}
