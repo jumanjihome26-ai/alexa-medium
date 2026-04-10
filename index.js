@@ -7,13 +7,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
-//para traer los datos de frases.json (FRASE_DIARIA)
-//no funcionó, dio error estás usando ES Modules (import)👉 NO CommonJS const datos = require("./frases.json");
-//tampoco funcionó : import datos from "./frases.json" assert { type: "json" };
-
 //Es un módulo nativo de Node.js. leer archivos, escribir archivos y  manejar el sistema de ficheros
 import fs from "fs";
-
 //lee archivo, lo convierte y lo deja listo para usar
 const datos = JSON.parse(
   fs.readFileSync("./frases.json", "utf-8")
@@ -22,62 +17,20 @@ const datos = JSON.parse(
 const comandosData = JSON.parse(
   fs.readFileSync("./comandosTablero.json", "utf-8")
 );
-
-//AÑADIDO PARA PROBAR SEÑALES DESDE ARCHIVO .JSON
 //lee archivo mensajesSeniales.json y lo deja listo para usar
-const mensajeSenialessData = JSON.parse(
+const mensajeSenialesData = JSON.parse(
   fs.readFileSync("./mensajesSeniales.json", "utf-8")
 );
-
-//AÑADIDO PARA PROBAR MENSAJES ALEXA MEDIUM FRASES EN ESPERA DESDE ARCHIVO .JSON
 //lee archivo frasesEnEspera.json y lo deja listo para usar
 const frasesEnEsperaData = JSON.parse(
   fs.readFileSync("./frasesEnEspera.json", "utf-8")
 );
 
-
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
 
-  const reprompts = frasesEnEsperaData.mensajeEnEspera
-  
- /* COMENTADO HASTA CONFIRMAR QUE FUNCIONA EN ARCHIVO .JSON 
-    const reprompts = [
-   "El tablero sigue abierto, no te hagas la distraida.",
-    "Sigo aquí... no finjas que no sabes qué toca.",
-   "El tablero no se ha cerrado... por si estabas pensando escapar.",
-   "Sigo escuchando... a ver qué haces ahora.",
-   "Tranquila... no he desaparecido. Continúa.",
-   "El tablero espera... sin prisa, pero sin pausa.",
-   "Aquí sigo... no te me pierdas ahora.",
-   "La jugada sigue en marcha… mueve ficha.",
-   "No he cerrado... curioso, ¿no?",
-    "Vuelve aquí... que no hemos terminado.",
-    "Sigo aquí... esto no se termina sólo",
-   "A ver... que no te has librado tan fácil.",
-   "No te me quedes en pausa ahora.",
-   "Sigo esperando... tú decides cuándo.",
-   "Esto sigue abierto... por si te haces la loca.",
-   "No he dicho fin... así que seguimos.",
-   "Vamos... que estabas en algo.",
-   "Aquí estoy... no me ignores ahora.",
-   "El tablero no se cierra solo... sorpresa.",
-   "Sigo en marcha… no te desconectes.",
-   "Vuelve aquí... que estabas en ello.",
-   "Eh… vuelve aquí, no te disperses ahora.",
-   "No te escapes... vuelve aquí.",
-   "Sigo esperando... sin presión... pero esperando.",
-   "Esto sigue activo... no mires para otro lado.",
-   "Aún no hemos terminado... por si dudas.",
-  "Aquí sigue todo... en marcha.",
-   "No te quedes colgada... continúa.",
-   "Esto no se ha cerrado... seguimos.",
-  "A ver cómo sigues ahora... ",
-   "Sigo aquí... paciente, pero no infinita.",
-   "El turno es tuyo... no lo olvides.",
-   "Vuelve aquí... no te me vayas ahora."
-  ];*/
-
+ //añadido mensaje por si falla el archivo .JSON "Algo no va como debería" = FALLO DER YEISON
+  const reprompts = frasesEnEsperaData.mensajeEnEspera || ["Algo no va como debería... pero seguimos."];
   const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
 
   return {
@@ -131,15 +84,14 @@ app.post("/webhook", async (req, res) => {
       : "";
     
 // 2️⃣ DEFINICIÓN DE COMANDOS (Tu lista Jumanji)
-//COMANDOS TABLERO: BLOQUEO, TENSIÓN, ETC (Ahorro OpenAI)****************************************************
+//COMANDOS TABLERO: BLOQUEO, TENSIÓN, ETC (Ahorro OpenAI)*******************
 //comandos tablero ahora vienen desde JSON
 const comandosTablero = comandosData.comandos_tablero;
 
 // 3️⃣ DETECTORES (Booleanos)
     // 🧠 LÓGICA DE SALUDO (Frase diaria)
     // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
-    const esApertura = texto.includes("hola") || texto.includes("buenos dias");
-    
+    const esApertura = /\b(hola|buenos dias)\b/.test(texto); // \b PARA EVITAR FALSOS POSITIVOS DE PALABRAS QUE CONTENGAN "HOL" O ALGO SIMILAR CON EL HOY
     // 🎴 MENSAJES NECESITO UNA SEÑAL
     // Se activan al decir tablero : señal, orden, ayuda o peligro (Ej.: tablero necesito una señal)
     const esSeñal = texto.includes("senal") || texto.includes("orden")
@@ -167,18 +119,11 @@ const comandosTablero = comandosData.comandos_tablero;
 
 // 5️⃣ EJECUCIÓN PRIORIDAD 2: SEÑAL (Ahorro OpenAI)   
   if (esSeñal) {
-      const MENSAJES_SENAL =  mensajeSenialessData.seniales;
-      /*COMENTADO HASTA CONFIRMAR QUE FUNCIONA DESDE ARCHIVO .JSON
-       const MENSAJES_SENAL = [
-        "Reduce todo a una acción mínima.",
-        "No elijas. Haz lo primero que veas.",
-        "Detente. Respira. Luego actúa.",
-        "Una sola acción. Nada más.",
-        "No mejores. Termina."
-        ];*/
-        const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
+//"Algo no va como debería" = FALLO DER YEISON
+    const MENSAJES_SENAL =  mensajeSenialesData.seniales || ["Algo no va como debería... pero quizás esta sea tu señal."];
+      const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
    
-        return res.json(respuestaAlexa(mensaje));
+      return res.json(respuestaAlexa(mensaje));
   }
 
 // 6️⃣ EJECUCIÓN PRIORIDAD 3: APERTURA / FRASE DÍA (Ahorro OpenAI)
@@ -227,8 +172,8 @@ const comandosTablero = comandosData.comandos_tablero;
         }
       ]
     });
-
-    const respuesta = completion.choices[0].message.content.trim();
+//Algo no va como debería" = FALLO pero no DER YEISON
+    const respuesta = completion.choices[0].message.content.trim() || "Algo no va como debería… ajusta y sigue.";
     return res.json(respuestaAlexa(respuesta));
 
   } catch (error) {
