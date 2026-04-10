@@ -23,6 +23,19 @@ const comandosData = JSON.parse(
   fs.readFileSync("./comandosTablero.json", "utf-8")
 );
 
+//AÑADIDO PARA PROBAR SEÑALES DESDE ARCHIVO .JSON
+//lee archivo mensajesSeniales.json y lo deja listo para usar
+const mensajeSenialessData = JSON.parse(
+  fs.readFileSync("./mensajesSeniales.json", "utf-8")
+);
+
+//AÑADIDO PARA PROBAR MENSAJES ALEXA MEDIUM FRASES EN ESPERA DESDE ARCHIVO .JSON
+//lee archivo frasesEnEspera.json y lo deja listo para usar
+const frasesEnEsperaData = JSON.parse(
+  fs.readFileSync("./frasesEnEspera.json", "utf-8")
+);
+
+
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
 
@@ -116,101 +129,28 @@ app.post("/webhook", async (req, res) => {
     
 // 2️⃣ DEFINICIÓN DE COMANDOS (Tu lista Jumanji)
 //COMANDOS TABLERO: BLOQUEO, TENSIÓN, ETC (Ahorro OpenAI)****************************************************
-//Se activan al decirle "tablero: bloqueo, tensión,interferencia, reubicación, cierre  
-  /*comentado para probar desde arhivo .json en lugar desde el código
-    const comandosTablero = {
-      "bloqueo": {
-       //VARIAS PRUEBAS REALIZADAS POR SEGUNDA VEZ PARA INCLUIR LA CANCION ESPECIFICA PERO NO FUNCIOAN:
-      // mensaje:`<audio src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"/> Muévete.`,
-         //tampoco funcionó // mensaje: `<audio src="https://www.soundjay.com/buttons/sounds/button-16.mp3"/> Muévete.`,
-       //  mensaje: `<audio src="https://alexa-medium.onrender.com/audio/1.mp3"/> Muévete.`,
-        mensaje: "Muévete.",
-          acciones: [
-            "Levántate ahora.",
-            "Da tres pasos hacia adelante.",
-            "Gira sobre ti misma."
-          ]
-      }, //fin bloqueo
-        
-      "tension": {
-          mensaje: "Aquí no.",
-          acciones: [
-            "Dale 2 puñetazos al saco boxeo.",
-            "Respira Profundo."
-          ]
-      }, //fub tension
-
-    "interferencia": {
-          mensaje: "No afectan.",
-          acciones: [
-            "Ponte los auriculares.",
-            "Sube el volumen de la música.",
-            "Sal y da una vuelta a la manzana."
-          ]
-      }, //fin interferencia (vecinos chungos)
-  
-      "ancla": {
-          mensaje: "Toca una superficie.",
-          acciones: [
-            "Apoya la mano en la mesa del comedor.",
-            "Toca la pared que da a la plaza.",
-            "Siente algo sólido."
-          ]
-      }, //fin ancla
-
-      "cambio foco": {
-          mensaje: "Toca una superficie.",
-          acciones: [
-            "Apoya la mano en la mesa del comedor.",
-            "Toca la pared que da a la plaza.",
-            "Siente algo sólido."
-          ]
-      }, //fin cambio foco
-    
-      "reubicar": {
-          mensaje: "Cambia de zona.",
-          acciones: [
-            "Ve al baño.",
-            "Baja a la entrada.",
-            "Sal al patio.",
-            "Sube a la azotea."
-          ]
-      }, //fin reubicar
-
-      "cierre": {
-          mensaje: "Ya está. Sigo.",
-          acciones: [
-            "Continúa con lo que hacías.",
-            "Retoma la actividad.",
-            "Sigue sin pensar."
-          ]
-        }//fin cierre (CUANDO TERMINA LA SITUACIÓN)
-      };
-*/
 //comandos tablero ahora vienen desde JSON
 const comandosTablero = comandosData.comandos_tablero;
 
 // 3️⃣ DETECTORES (Booleanos)
-     // 🧠 LÓGICA DE SALUDO (Frase diaria)
-     // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
+    // 🧠 LÓGICA DE SALUDO (Frase diaria)
+    // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
     const esApertura = texto.includes("hola") || texto.includes("buenos dias");
     // 🎴 MENSAJES NECESITO UNA SEÑAL
     // Se activan al decir tablero : señal, orden, ayuda o peligro (Ej.: tablero necesito una señal)
     const esSeñal = texto.includes("senal") || texto.includes("orden")
                  || texto.includes("ayuda") || texto.includes("peligro");
-    // 🔍 BUSCADOR DE COMANDO 
+   // 🔍 BUSCADOR DE COMANDO 
     //Se activan al deir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
-    //const comandoDetectado = Object.keys(comandosTablero).find(cmd => texto.includes(cmd));
-
     //normaliza claves JSON, las iguala al texto del usuario y hace match real
-    const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
+      const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
       const cmdNormalizado = cmd
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
         
       return texto.includes(cmdNormalizado);
-    });
+      });
     
 // 4️⃣ EJECUCIÓN PRIORIDAD 1: COMANDOS (Ahorro OpenAI)
     if (comandoDetectado) {
@@ -222,17 +162,18 @@ const comandosTablero = comandosData.comandos_tablero;
 
 // 5️⃣ EJECUCIÓN PRIORIDAD 2: SEÑAL (Ahorro OpenAI)   
   if (esSeñal) {
-    const MENSAJES_SENAL = [
-    "Reduce todo a una acción mínima.",
-    "No elijas. Haz lo primero que veas.",
-    "Detente. Respira. Luego actúa.",
-    "Una sola acción. Nada más.",
-    "No mejores. Termina."
-
-    ];
-     const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
-    //  ERROR: ESTE RETURN ESTÁ SUELTO return res.json(respuestaAlexa(mensaje)); // 🛑 AQUÍ CORTA Y AHORRA
-    return res.json(respuestaAlexa(mensaje));
+      const MENSAJES_SENAL =  mensajeSenialessData.seniales;
+      /*COMENTADO HASTA CONFIRMAR QUE FUNCIONA DESDE ARCHIVO .JSON
+       const MENSAJES_SENAL = [
+        "Reduce todo a una acción mínima.",
+        "No elijas. Haz lo primero que veas.",
+        "Detente. Respira. Luego actúa.",
+        "Una sola acción. Nada más.",
+        "No mejores. Termina."
+        ];*/
+        const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
+   
+        return res.json(respuestaAlexa(mensaje));
   }
 
 // 6️⃣ EJECUCIÓN PRIORIDAD 3: APERTURA / FRASE DÍA (Ahorro OpenAI)
@@ -240,7 +181,6 @@ const comandosTablero = comandosData.comandos_tablero;
           // 🌿 FRASES DIARIAS DESDE EL ARCHIVO frases.json
           const FRASES_DIA = datos.frases_dia;
  
-   
           //CALCULO FECHA Y MISMA FRASE TODO EL DÍA FRASE 1 DÍA 1 DEL AÑO
           const hoy = new Date();
           const inicioAño = new Date(hoy.getFullYear(), 0, 0);
@@ -248,10 +188,9 @@ const comandosTablero = comandosData.comandos_tablero;
           const unDia = 1000 * 60 * 60 * 24;
           const diaDelAño = Math.floor(diferencia / unDia);
           
-        const frase = FRASES_DIA[diaDelAño % FRASES_DIA.length];
-        //  ERROR: ESTE RETURN ESTÁ SUELTOreturn res.json(respuestaAlexa(frase)); // 🛑 AQUÍ CORTA Y AHORRA
-    
-       return res.json(respuestaAlexa(frase));
+          const frase = FRASES_DIA[diaDelAño % FRASES_DIA.length];
+   
+         return res.json(respuestaAlexa(frase));
     }
   
 // 7️⃣ RESPUESTAS RÁPIDAS EXTRAS (Ahorro OpenAI)
