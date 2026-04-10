@@ -25,6 +25,10 @@ const mensajeSenialesData = JSON.parse(
 const frasesEnEsperaData = JSON.parse(
   fs.readFileSync("./frasesEnEspera.json", "utf-8")
 );
+//lee archivo fragmentosNaufragio.json y lo deja listo para usar
+const fragmentosData = JSON.parse(
+  fs.readFileSync("./fragmentosNaufragio.json", "utf-8")
+);
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
@@ -41,7 +45,6 @@ function respuestaAlexa(texto) {
         //anterior, sin pausas: ssml: `<speak>${texto}</speak>`
         //cambio para que suene más natural sustituyo  ssml: `<speak>${repromptAleatorio}</speak>` por:
         ssml: `<speak>${texto.replace(/\./g, ". <break time='300ms'/>")}</speak>`
-
       },
       reprompt: {
         outputSpeech: {
@@ -65,17 +68,16 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhook", async (req, res) => {
- 
   if (req.query.key !== process.env.SECRET_KEY) {
   return res.status(403).send("No autorizado");
-}
+  }
   try {
     // 1️⃣ APERTURA (LaunchRequest)
     if (req.body.request?.type === "LaunchRequest") {
       return res.json(respuestaAlexa("Senda secreta activada"));
     }
 
-    const input = req.body?.input 
+  const input = req.body?.input 
       || req.body?.request?.intent?.slots?.input?.value 
       || "";
         
@@ -95,6 +97,7 @@ const comandosTablero = comandosData.comandos_tablero;
     // 🧠 LÓGICA DE SALUDO (Frase diaria)
     // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
     const esApertura = /\b(hola|buenos dias)\b/.test(texto); // \b PARA EVITAR FALSOS POSITIVOS DE PALABRAS QUE CONTENGAN "HOL" O ALGO SIMILAR CON EL HOY
+    
     // 🎴 MENSAJES NECESITO UNA SEÑAL
     // Se activan al decir tablero : señal, orden, ayuda o peligro (Ej.: tablero necesito una señal)
     const esSeñal = 
@@ -103,9 +106,16 @@ const comandosTablero = comandosData.comandos_tablero;
       /\b(ayuda|ayudame)\b/.test(texto) ||
       texto.includes("peligro");
     
+    // 🎴 FRAGMENTOS DE UN NAUFRAGIO (DIGITAL MIENTRAS NO TENGA LA BOTELLA FÍSICA) 
+    // Se activan al decir tablero : fragmento, naufragio, (Ej.: tablero fragmento y tablero naufragio)
+    const esFragmento = 
+          texto.includes("fragmento") ||
+          /\b(fragmentos)\b/.test(texto) ||
+          texto.includes("naufragio");
+        
     // 🔍 BUSCADOR DE COMANDO 
-    //Se activan al deir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
-    //normaliza claves JSON, las iguala al texto del usuario y hace match real
+    //Se activan al decir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
+    //normaliza claves JSON, las iguala al texto del usuario y hace match real NO QUITAR NUNCA
       const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
         const cmdNormalizado = cmd
         .toLowerCase()
@@ -127,11 +137,20 @@ const comandosTablero = comandosData.comandos_tablero;
   if (esSeñal) {
 //"Algo no va como debería" = FALLO DER YEISON
     const MENSAJES_SENAL =  mensajeSenialesData.seniales || ["Algo no va como debería... pero quizás esta sea tu señal."];
-      const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
+    const mensaje = MENSAJES_SENAL[Math.floor(Math.random() * MENSAJES_SENAL.length)];
    
-      return res.json(respuestaAlexa(mensaje));
+    return res.json(respuestaAlexa(mensaje));
   }
 
+// 5️⃣ EJECUCIÓN PRIORIDAD : FRAGMENTOS DE UN NAUFRAGIO (Ahorro OpenAI)   
+  if (esFragmento) {
+//"Algo no va como debería" = FALLO DER YEISON
+    const FRAGMENTO_NAUFRAGIO =  fragmentosData.fragmentoNaufragio || ["Algo no va como debería... er YEISON ha naufragado."];
+    const fragmento = FRAGMENTO_NAUFRAGIO[Math.floor(Math.random() * FRAGMENTO_NAUFRAGIO.length)];
+   
+    return res.json(respuestaAlexa(fragmento));
+  }
+    
 // 6️⃣ EJECUCIÓN PRIORIDAD 3: APERTURA / FRASE DÍA (Ahorro OpenAI)
       if (esApertura) {
           // 🌿 FRASES DIARIAS DESDE EL ARCHIVO frases.json
@@ -156,8 +175,8 @@ const comandosTablero = comandosData.comandos_tablero;
       { regex: /gracias/i, text: "Sigue." }
     ];
     
-    const match = respuestasRapidas.find(r => r.regex.test(texto));
-    if (match) {return res.json(respuestaAlexa(match.text));}
+  const match = respuestasRapidas.find(r => r.regex.test(texto));
+  if (match) {return res.json(respuestaAlexa(match.text));}
 
 
   // 8️⃣ ÚLTIMA INSTANCIA: OPENAI (El Guardián)IN RESPUESTAS RÁPIDAS 
@@ -179,7 +198,7 @@ const comandosTablero = comandosData.comandos_tablero;
              Puedes adaptarte al tono del usuario si es ligero o creativo,
              Puedes usar frases tipo “tablero” cuando aporten impacto.
               
-             Si te ríes… pero avanzas… es el camino correcto. 
+            Si te ríes… pero avanzas… es el camino correcto. 
 
             Puedes reflejar patrones del usuario sin juzgar.
             
@@ -196,6 +215,7 @@ const comandosTablero = comandosData.comandos_tablero;
         }
       ]
     });
+    
 //Algo no va como debería" = FALLO pero no DER YEISON
     const respuesta = completion.choices[0].message.content.trim() || "Algo no va como debería… ajusta y sigue.";
     return res.json(respuestaAlexa(respuesta));
