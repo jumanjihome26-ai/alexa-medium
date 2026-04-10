@@ -214,6 +214,11 @@ const comandosTablero = comandosData.comandos_tablero;
         No la explicas.
         Su función es cortar el estado, no analizarlo.
         
+        Las frases ancla se usan por función, no por efecto emocional.
+
+        El efecto emocional pertenece al contexto en el que surgieron,
+        no debe forzarse ni recrearse artificialmente.
+        
         Puedes usar lenguaje simbólico o ritual si refuerza el avance,
         pero sin exageración.
         
