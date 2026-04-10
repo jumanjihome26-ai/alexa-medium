@@ -26,9 +26,9 @@ const comandosData = JSON.parse(
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
 
-  const reprompts = [
-    "El tablero sigue abierto, no te hagas la distraida."
-  ];
+ // const reprompts = [
+  //  "El tablero sigue abierto, no te hagas la distraida."
+ // ];
   
   /// "Sigo aquí... no finjas que no sabes qué toca.",
  // "El tablero no se ha cerrado... por si estabas pensando escapar.",
@@ -65,7 +65,7 @@ function respuestaAlexa(texto) {
 
 
 
-  const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
+ // const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
 
   return {
     version: "1.0",
