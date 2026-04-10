@@ -101,7 +101,7 @@ app.post("/webhook", async (req, res) => {
 const comandosTablero = comandosData.comandos_tablero;
 
 //casillas peligro del tablero ahora vienen desde JSON
-const casillasPeligro = casillasData.casillaPeligro;
+const casillasPeligro = casillasPeligroData.casillaPeligro;
     
 // 3️⃣ DETECTORES (Booleanos)
     // 🧠 LÓGICA DE SALUDO (Frase diaria)
