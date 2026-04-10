@@ -31,9 +31,9 @@ const mensajeSenialessData = JSON.parse(
 
 //AÑADIDO PARA PROBAR MENSAJES ALEXA MEDIUM FRASES EN ESPERA DESDE ARCHIVO .JSON
 //lee archivo frasesEnEspera.json y lo deja listo para usar
-const frasesEnEsperaData = JSON.parse(
-  fs.readFileSync("./frasesEnEspera.json", "utf-8")
-);
+//const frasesEnEsperaData = JSON.parse(
+//  fs.readFileSync("./frasesEnEspera.json", "utf-8")
+//);
 
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
