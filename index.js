@@ -31,15 +31,18 @@ const mensajeSenialessData = JSON.parse(
 
 //AÑADIDO PARA PROBAR MENSAJES ALEXA MEDIUM FRASES EN ESPERA DESDE ARCHIVO .JSON
 //lee archivo frasesEnEspera.json y lo deja listo para usar
-//const frasesEnEsperaData = JSON.parse(
-//  fs.readFileSync("./frasesEnEspera.json", "utf-8")
-//);
+const frasesEnEsperaData = JSON.parse(
+  fs.readFileSync("./frasesEnEspera.json", "utf-8")
+);
 
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
 
-  const reprompts = [
+  const reprompts = frasesEnEsperaData.mensajeEnEspera
+  
+ /* COMENTADO HASTA CONFIRMAR QUE FUNCIONA EN ARCHIVO .JSON 
+    const reprompts = [
    "El tablero sigue abierto, no te hagas la distraida.",
     "Sigo aquí... no finjas que no sabes qué toca.",
    "El tablero no se ha cerrado... por si estabas pensando escapar.",
@@ -73,7 +76,7 @@ function respuestaAlexa(texto) {
    "Sigo aquí... paciente, pero no infinita.",
    "El turno es tuyo... no lo olvides.",
    "Vuelve aquí... no te me vayas ahora."
-  ];
+  ];*/
 
   const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
 
@@ -136,15 +139,17 @@ const comandosTablero = comandosData.comandos_tablero;
     // 🧠 LÓGICA DE SALUDO (Frase diaria)
     // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
     const esApertura = texto.includes("hola") || texto.includes("buenos dias");
+    
     // 🎴 MENSAJES NECESITO UNA SEÑAL
     // Se activan al decir tablero : señal, orden, ayuda o peligro (Ej.: tablero necesito una señal)
     const esSeñal = texto.includes("senal") || texto.includes("orden")
                  || texto.includes("ayuda") || texto.includes("peligro");
-   // 🔍 BUSCADOR DE COMANDO 
+   
+    // 🔍 BUSCADOR DE COMANDO 
     //Se activan al deir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
     //normaliza claves JSON, las iguala al texto del usuario y hace match real
       const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
-      const cmdNormalizado = cmd
+        const cmdNormalizado = cmd
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
@@ -214,7 +219,7 @@ const comandosTablero = comandosData.comandos_tablero;
           //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN EN NINGÚN MOMENTO  
           content: "Eres el Guardián de las Sendas. Hablas con tono de explorador, en tono sabio y cercano, con un toque misterioso y ligera narrativa  tipo Jumanji pero sin teatralidad ni frases épicas exageradas. Responde en 2 frases cortas, claras y naturales para voz. Evita lenguaje excesivamente literario o recargado, evita sonar como un chatbot. Siempre dejas una sensación de dirección o pequeño impulso a la acción."
          //content: PROBAR CON AÑADIDO Y SI NO ME GUSTA QUITARLO: . Siempre dejas una sensación de dirección o pequeño impulso a la acción.
-       //OTRA PRUEBA PARA PERSONALIDAD DEL GUARDIÁN: tono de explorador, cercano y natural, con ligera narrativa tipo Jumanji pero sin teatralidad ni frases épicas exageradas
+         //OTRA PRUEBA PARA PERSONALIDAD DEL GUARDIÁN: tono de explorador, cercano y natural, con ligera narrativa tipo Jumanji pero sin teatralidad ni frases épicas exageradas
         },
         {
           role: "user",
