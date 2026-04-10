@@ -27,8 +27,8 @@ const comandosData = JSON.parse(
 function respuestaAlexa(texto) {
 
   const reprompts = [
-  "El tablero sigue abierto... no te hagas la distraída.",
-  "Sigo aquí... no finjas que no sabes qué toca.",
+ "El tablero sigue abierto... no te hagas la distraída.",
+   /*"Sigo aquí... no finjas que no sabes qué toca.",
   "El tablero no se ha cerrado... por si estabas pensando escapar.",
   "Sigo escuchando... a ver qué haces ahora.",
   "Tranquila... no he desaparecido. Continúa.",
@@ -59,7 +59,7 @@ function respuestaAlexa(texto) {
   "A ver cómo sigues ahora... ",
   "Sigo aquí... paciente, pero no infinita.",
   "El turno es tuyo... no lo olvides.",
-  "Vuelve aquí... no te me vayas ahora."
+  "Vuelve aquí... no te me vayas ahora."*/
 
 ];
 
