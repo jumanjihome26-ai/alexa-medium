@@ -38,13 +38,15 @@ function respuestaAlexa(texto) {
     response: {
       outputSpeech: {
         type: "SSML",
-        ssml: `<speak>${texto}</speak>`
+        //anterior, sin pausas: ssml: `<speak>${texto}</speak>`
+        //cambio para que suene más natural sustituyo  ssml: `<speak>${repromptAleatorio}</speak>` por:
+        ssml: `<speak>${texto.replace(/\./g, ". <break time='300ms'/>")}</speak>`
+
       },
       reprompt: {
         outputSpeech: {
-          type: "SSML",
-        //cambio para que suene más natural sustituyo  ssml: `<speak>${repromptAleatorio}</speak>` por:
-          ssml: `<speak>${texto.replace(/\./g, ". <break time='300ms'/>")}</speak>`
+          type: "SSML",    
+          ssml: `<speak>${repromptAleatorio}</speak>`
         }
       },
       shouldEndSession: false
