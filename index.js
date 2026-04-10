@@ -9,7 +9,8 @@ app.use(express.static("public"));
 
 //Es un módulo nativo de Node.js. leer archivos, escribir archivos y  manejar el sistema de ficheros
 import fs from "fs";
-//lee archivo, lo convierte y lo deja listo para usar
+
+//lee archivo frases.json, lo convierte y lo deja listo para usar
 const datos = JSON.parse(
   fs.readFileSync("./frases.json", "utf-8")
 );
@@ -29,6 +30,11 @@ const frasesEnEsperaData = JSON.parse(
 const fragmentosData = JSON.parse(
   fs.readFileSync("./fragmentosNaufragio.json", "utf-8")
 );
+//lee archivo casillasPeligro.json y lo deja listo para usar
+const casillasPeligroData = JSON.parse(
+  fs.readFileSync("./casillasPeligro.json", "utf-8")
+);
+
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
@@ -87,12 +93,16 @@ app.post("/webhook", async (req, res) => {
     const texto = input
       ? input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim()
       : "";
+
     
 // 2️⃣ DEFINICIÓN DE COMANDOS (Tu lista Jumanji)
 //COMANDOS TABLERO: BLOQUEO, TENSIÓN, ETC (Ahorro OpenAI)*******************
 //comandos tablero ahora vienen desde JSON
 const comandosTablero = comandosData.comandos_tablero;
 
+//casillas peligro del tablero ahora vienen desde JSON
+const casillasPeligro = casillasData.casillaPeligro;
+    
 // 3️⃣ DETECTORES (Booleanos)
     // 🧠 LÓGICA DE SALUDO (Frase diaria)
     // Se activan al decir tablero : hola y buenos días (Ej.: tablero hola y tablero buenos días)
@@ -113,10 +123,11 @@ const comandosTablero = comandosData.comandos_tablero;
           /\b(fragmentos)\b/.test(texto) ||
           texto.includes("naufragio");
         
-    // 🔍 BUSCADOR DE COMANDO 
+    // 🔍 BUSCADOR DE COMANDO DEL TABLERO
     //Se activan al decir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
-    //normaliza claves JSON, las iguala al texto del usuario y hace match real NO QUITAR NUNCA
+    //💬 “recorre todas las claves del JSON y llámalas c una por una”:
       const comandoDetectado = Object.keys(comandosTablero).find(cmd => {
+        //normaliza claves JSON, las iguala al texto del usuario y hace match real NO QUITAR NUNCA
         const cmdNormalizado = cmd
         .toLowerCase()
         .normalize("NFD")
@@ -124,7 +135,7 @@ const comandosTablero = comandosData.comandos_tablero;
         
       return texto.includes(cmdNormalizado);
       });
-    
+
 // 4️⃣ EJECUCIÓN PRIORIDAD 1: COMANDOS (Ahorro OpenAI)
     if (comandoDetectado) {
       const data = comandosTablero[comandoDetectado];
@@ -132,7 +143,34 @@ const comandosTablero = comandosData.comandos_tablero;
       // En el GET del navegador devolvemos JSON simple para leerlo bien
       return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
     }
+    
+// 🔍 BUSCADOR DE CASILLA DE PELIGRO DEL TABLERO
+    //Se activan al caer en la casilla del tablero y  decir tablero: araña, rio,(Ej.:tablero araña)
+    //normaliza claves JSON, las iguala al texto del usuario y hace match real NO QUITAR NUNCA
+     const casillaDetectada = Object.keys(casillasPeligro).find(casilla => {
+        const normalizada = casilla
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      
+        return texto.includes(normalizada);
+    });
+//  EJECUCIÓN : CASILLAS DE PELIGRO DEL TABLERO (Ahorro OpenAI)
+if (casillaDetectada) {
+  const data = casillasPeligro[casillaDetectada];
 
+    const respuestaCasilla= `
+    ${data.clase}.
+    ${data.efecto}.
+    ${data.accion}.
+    ${data.proposito}.
+    ${data.prohibicion || ""}
+    `;
+
+  return res.json(respuestaAlexa(respuestaCasilla));
+}
+
+  
 // 5️⃣ EJECUCIÓN PRIORIDAD 2: SEÑAL (Ahorro OpenAI)   
   if (esSeñal) {
 //"Algo no va como debería" = FALLO DER YEISON
