@@ -31,9 +31,9 @@ const fragmentosData = JSON.parse(
   fs.readFileSync("./fragmentosNaufragio.json", "utf-8")
 );
 //lee archivo casillasPeligro.json y lo deja listo para usar
-const casillasPeligroData = JSON.parse(
-  fs.readFileSync("./casillasPeligro.json", "utf-8")
-);
+//const casillasPeligroData = JSON.parse(
+  //fs.readFileSync("./casillasPeligro.json", "utf-8")
+//);
 
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
@@ -144,7 +144,7 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
       return res.json(respuestaAlexa(`${data.mensaje} ${accion}`));
     }
     
-// 🔍 BUSCADOR DE CASILLA DE PELIGRO DEL TABLERO
+/*// 🔍 BUSCADOR DE CASILLA DE PELIGRO DEL TABLERO
     //Se activan al caer en la casilla del tablero y  decir tablero: araña, rio,(Ej.:tablero araña)
     //normaliza claves JSON, las iguala al texto del usuario y hace match real NO QUITAR NUNCA
      const casillaDetectada = Object.keys(casillasPeligro).find(casilla => {
@@ -169,7 +169,7 @@ if (casillaDetectada) {
 
   return res.json(respuestaAlexa(respuestaCasilla));
 }
-
+*/
   
 // 5️⃣ EJECUCIÓN PRIORIDAD 2: SEÑAL (Ahorro OpenAI)   
   if (esSeñal) {
