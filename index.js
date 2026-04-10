@@ -27,7 +27,9 @@ const comandosData = JSON.parse(
 function respuestaAlexa(texto) {
 
   const reprompts = [
-   "El tablero sigue abierto... no te hagas la distraída."
+    "El tablero sigue abierto, no te hagas la distraida."
+  ];
+  
   /// "Sigo aquí... no finjas que no sabes qué toca.",
  // "El tablero no se ha cerrado... por si estabas pensando escapar.",
 //  "Sigo escuchando... a ver qué haces ahora.",
@@ -53,7 +55,7 @@ function respuestaAlexa(texto) {
 //  "Sigo esperando... sin presión... pero esperando.",
  // "Esto sigue activo... no mires para otro lado.",
  // "Aún no hemos terminado... por si dudas.",
-//"Aquí sigue todo... en marcha.",
+// "Aquí sigue todo... en marcha.",
  // "No te quedes colgada... continúa.",
  // "Esto no se ha cerrado... seguimos.",
   //"A ver cómo sigues ahora... ",
@@ -61,7 +63,7 @@ function respuestaAlexa(texto) {
  // "El turno es tuyo... no lo olvides.",
  // "Vuelve aquí... no te me vayas ahora."*/
 
-];
+
 
   const repromptAleatorio = reprompts[Math.floor(Math.random() * reprompts.length)];
 
