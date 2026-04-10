@@ -95,9 +95,12 @@ const comandosTablero = comandosData.comandos_tablero;
     const esApertura = /\b(hola|buenos dias)\b/.test(texto); // \b PARA EVITAR FALSOS POSITIVOS DE PALABRAS QUE CONTENGAN "HOL" O ALGO SIMILAR CON EL HOY
     // 🎴 MENSAJES NECESITO UNA SEÑAL
     // Se activan al decir tablero : señal, orden, ayuda o peligro (Ej.: tablero necesito una señal)
-    const esSeñal = texto.includes("senal") || texto.includes("orden")
-                 || texto.includes("ayuda") || texto.includes("peligro");
-   
+    const esSeñal = 
+      texto.includes("senal") ||
+      texto.includes("orden") ||
+      /\b(ayuda|ayudame)\b/.test(texto) ||
+      texto.includes("peligro");
+    
     // 🔍 BUSCADOR DE COMANDO 
     //Se activan al deir tablero: bloqueo, tensión, reubicar, etc... (Ej.:tablero bloqueo)
     //normaliza claves JSON, las iguala al texto del usuario y hace match real
