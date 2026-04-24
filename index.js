@@ -224,33 +224,47 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
       texto.includes("explic") ||
       texto.includes("detalle") ||
       texto.includes("mas");
-//modificar el input (clave)
-    let inputModificado = input;
-if (modoExpansion && ultimaRespuesta) {
-//Explicar como TERMINA la historia o el FINAL
-  if (texto.includes("termina") || texto.includes("final")) {
-    inputModificado = `Amplía explicando cómo termina la historia: ${ultimaRespuesta}`;
-//explicar más CÓMO FUNCIONA
-  } else if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
-    inputModificado = `Amplía explicando cómo funciona: ${ultimaRespuesta}`;
-//explícame más la HISTORIA
-  } else if (texto.includes("historia")) {
-    inputModificado = `Amplía explicando la historia: ${ultimaRespuesta}`;
-//“explícame más POR QUÉ // POR QUE era importante” 
-  } else if (texto.includes("por que") || texto.includes("por qué")) {
-    inputModificado = `Amplía explicando por qué es importante: ${ultimaRespuesta}`;
-
-  } else {
-    inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
-  }
-
-}
-
-  
-
-
+    //modificar el input (clave)
+        let inputModificado = input;
+    if (modoExpansion && ultimaRespuesta) {
+    //Explicar como TERMINA la historia o el FINAL
+      if (
+      texto.includes("termina") ||
+      texto.includes("termino") ||
+      texto.includes("terminar") ||
+      texto.includes("final")
+    ) {
+      if (
+          ultimaRespuesta.toLowerCase().includes("mitologia") ||
+          ultimaRespuesta.toLowerCase().includes("obra") ||
+          ultimaRespuesta.toLowerCase().includes("historia") ||
+          ultimaRespuesta.toLowerCase().includes("personaje")
+        ) {
+        // caso historia
+          inputModificado = `Amplía explicando cómo termina la historia: ${ultimaRespuesta}`;
+      
+          } else {
+          // caso proceso
+          inputModificado = `Amplía explicando cómo finalizar el proceso: ${ultimaRespuesta}`;
+          }
+    }
+       //explicar más CÓMO FUNCIONA
+      } else if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
+        inputModificado = `Amplía explicando cómo funciona: ${ultimaRespuesta}`;
+    //explícame más la HISTORIA
+      } else if (texto.includes("historia")) {
+        inputModificado = `Amplía explicando la historia: ${ultimaRespuesta}`;
+    //“explícame más POR QUÉ // POR QUE era importante” 
+      } else if (texto.includes("por que") || texto.includes("por qué")) {
+        inputModificado = `Amplía explicando por qué es importante: ${ultimaRespuesta}`;
     
-  //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN    
+      } else {
+        inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
+      }
+    
+    }
+    
+  //PERSONALIDAD DE ROMEILLO SOLTANDO LOS RUEDINES, (PENDIENTE DE LOGRAR A ROMEO)
     const completion = await client.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
