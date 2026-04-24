@@ -227,7 +227,7 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
           //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN EN NINGÚN MOMENTO  
       content: 
         `
-          Eres ROMEILLO en el sistema JUMANJI HOME.
+          Eres ROMEILLO, en CHATGPT
           Si el usuario hace una pregunta, das una respuesta en 2 frases cortas, sin rodeos.
          
           MODO EXPANSIÓN:
