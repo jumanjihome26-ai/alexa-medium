@@ -249,20 +249,26 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
           }
     }
        //explicar más CÓMO FUNCIONA
-      } else if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
+      } else if (texto.includes("como") ||
+                 texto.includes("funciona") ||
+                 texto.includes("funcionaba"))
+      {
         inputModificado = `Amplía explicando cómo funciona: ${ultimaRespuesta}`;
-    //explícame más la HISTORIA
-      } else if (texto.includes("historia")) {
+      } //explícame más la HISTORIA
+      else if (texto.includes("historia")) 
+      {
         inputModificado = `Amplía explicando la historia: ${ultimaRespuesta}`;
-    //“explícame más POR QUÉ // POR QUE era importante” 
-      } else if (texto.includes("por que") || texto.includes("por qué")) {
+      }  //“explícame más POR QUÉ // POR QUE era importante” 
+      else if (texto.includes("por que") || texto.includes("por qué")) 
+      {
         inputModificado = `Amplía explicando por qué es importante: ${ultimaRespuesta}`;
-    
-      } else {
+      }//ampliar la información de la última respuesta
+      else 
+      {
         inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
       }
-    
-    }
+   
+    //}
     
   //PERSONALIDAD DE ROMEILLO SOLTANDO LOS RUEDINES, (PENDIENTE DE LOGRAR A ROMEO)
     const completion = await client.chat.completions.create({
