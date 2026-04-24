@@ -225,9 +225,7 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
         {
           role: "system",
           //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN EN NINGÚN MOMENTO  
-          content: 
-            `
-        content: 
+         content: 
            `Eres EL GUARDIÁN del sistema JUMANJI HOME.
             
             No diriges la partida.
