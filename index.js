@@ -6,7 +6,6 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-
 //Es un módulo nativo de Node.js. leer archivos, escribir archivos y  manejar el sistema de ficheros
 import fs from "fs";
 
@@ -228,10 +227,23 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
 //modificar el input (clave)
     let inputModificado = input;
 
-    if (modoExpansion && ultimaRespuesta) 
-    {
-      inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
-    }
+if (modoExpansion && ultimaRespuesta) {
+//explicar más CÓMO FUNCIONA
+  if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
+    inputModificado = `Amplía explicando cómo funciona: ${ultimaRespuesta}`;
+//explícame más la HISTORIA
+  } else if (texto.includes("historia")) {
+    inputModificado = `Amplía explicando la historia: ${ultimaRespuesta}`;
+//“explícame más POR QUÉ // POR QUE era importante” 
+  } else if (texto.includes("por que") || texto.includes("por qué")) {
+    inputModificado = `Amplía explicando por qué es importante: ${ultimaRespuesta}`;
+  } else {
+    inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
+  } // else {
+    //inputModificado = "ROMEILLO SUSPIRA ALIVIADO";
+  //}
+
+}
     
   //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN    
     const completion = await client.chat.completions.create({
