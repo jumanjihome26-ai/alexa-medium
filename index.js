@@ -226,10 +226,12 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
       texto.includes("mas");
 //modificar el input (clave)
     let inputModificado = input;
-
 if (modoExpansion && ultimaRespuesta) {
+//Explicar como TERMINA la historia o el FINAL
+  if (texto.includes("termina") || texto.includes("final")) {
+    inputModificado = `Amplía explicando cómo termina la historia: ${ultimaRespuesta}`;
 //explicar más CÓMO FUNCIONA
-  if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
+  } else if (texto.includes("como") || texto.includes("funciona") || texto.includes("funcionaba")) {
     inputModificado = `Amplía explicando cómo funciona: ${ultimaRespuesta}`;
 //explícame más la HISTORIA
   } else if (texto.includes("historia")) {
@@ -237,13 +239,16 @@ if (modoExpansion && ultimaRespuesta) {
 //“explícame más POR QUÉ // POR QUE era importante” 
   } else if (texto.includes("por que") || texto.includes("por qué")) {
     inputModificado = `Amplía explicando por qué es importante: ${ultimaRespuesta}`;
+
   } else {
     inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
-  } // else {
-    //inputModificado = "ROMEILLO SUSPIRA ALIVIADO";
-  //}
+  }
 
 }
+
+  
+
+
     
   //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN    
     const completion = await client.chat.completions.create({
