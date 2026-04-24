@@ -35,6 +35,8 @@ const casillasPeligroData = JSON.parse(
   fs.readFileSync("./casillasPeligro.json", "utf-8")
 );
 
+//variable para guardar la última respuesta CHATGPT para poder expandir la información
+let ultimaRespuesta = "";
 
 // 🎙️ MOTOR ALEXA (Formato obligatorio para que el dispositivo responda)
 function respuestaAlexa(texto) {
@@ -217,7 +219,20 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
   if (match) {return res.json(respuestaAlexa(match.text));}
 
 
-  // 8️⃣ ÚLTIMA INSTANCIA: OPENAI (El Guardián)IN RESPUESTAS RÁPIDAS 
+  // 8️⃣ ÚLTIMA INSTANCIA: OPENAI (El Guardián)SIN RESPUESTAS RÁPIDAS 
+   //detector de expansión en la respueta
+    const modoExpansion = 
+      texto.includes("explic") ||
+      texto.includes("detalle") ||
+      texto.includes("mas");
+//modificar el input (clave)
+    let inputModificado = input;
+
+    if (modoExpansion && ultimaRespuesta) 
+    {
+      inputModificado = `Amplía esta información: ${ultimaRespuesta}`;
+    }
+    
   //PERSONALIDAD DE EL GUARDIAN NO TOCAR LA DESCRIPCIÓN    
     const completion = await client.chat.completions.create({
       model: "gpt-4.1-mini",
@@ -255,13 +270,18 @@ const casillasPeligro = casillasPeligroData.casillaPeligro;
            },
        {
           role: "user",
-          content: input
+          //linea modificada //content: input
+         
+         //usar el input modificado
+           content: inputModificado
         }
       ]
     });
     
 //Algo no va como debería" = FALLO pero no DER YEISON
     const respuesta = completion.choices[0].message.content.trim() || "Algo no va como debería… ajusta y sigue.";
+    //guardar la respuesta para poder utilizar la última respuesta si quiero ampliar información 
+    ultimaRespuesta = respuesta;
     return res.json(respuestaAlexa(respuesta));
 
   } catch (error) {
